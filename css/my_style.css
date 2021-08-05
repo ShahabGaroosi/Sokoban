@@ -1,0 +1,28 @@
+.block {
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-color: black;
+  }
+
+  /*  Legend
+    W = Wall
+    B = Movable block
+    P = Player starting position
+    G = Goal area for the blocks
+*/
+.W {
+    background-color: grey;
+  }
+
+.B {
+    background-color: brown;
+  }
+
+.P {
+    background-color: green;
+  }
+
+.G {
+    background-color: red;
+  }
