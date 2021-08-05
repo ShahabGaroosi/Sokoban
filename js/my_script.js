@@ -23,8 +23,6 @@ for (let i = 0; i < tileMap.height; i++) {
     myContent.appendChild(newBlocks);
 }
 
-
-
 function reset(){
     let idCounter0=0;
     for (let i = 0; i < tileMap.height; i++) {
