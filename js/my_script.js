@@ -2,21 +2,24 @@
 /* jshint browser: true */
 
 var myContent = document.getElementById("content");
-var idCounter = 0;
 var tileMap = tileMap01;
 var personPos;
 
-for (let i = 0; i < tileMap.height; i++) {
+function idConvers(i) {
+    return "x"+i[0]+"y"+i[1];
+}
+
+for (let j = 0; j < tileMap.height; j++) {
     let newBlocks = document.createElement("TR");
-    for (let j = 0; j < tileMap.width; j++) {
+    for (let i = 0; i < tileMap.width; i++) {
         let newBlock = document.createElement("TD");
         newBlock.classList.add("block");
-        newBlock.id = ++idCounter;
-        if (tileMap.mapGrid[i][j]!=" ") {
-            newBlock.classList.add(tileMap.mapGrid[i][j]);
+        newBlock.id = idConvers([i,j]);
+        if (tileMap.mapGrid[j][i]!=" ") {
+            newBlock.classList.add(tileMap.mapGrid[j][i]);
         }
         newBlocks.appendChild(newBlock);
-        if (tileMap.mapGrid[i][j] == "P") {
+        if (tileMap.mapGrid[j][i] == "P") {
             personPos = [i,j];
         }
     }
@@ -25,64 +28,40 @@ for (let i = 0; i < tileMap.height; i++) {
 
 window.addEventListener("keydown", updateTileMap);
 
-window.addEventListener("keydown", function(event){
-    if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)) {
-        event.preventDefault();
+function updateTileMap(event) {
+    switch (event.key) {
+        case "ArrowLeft":
+            movePlayer(event, [-1,0]);
+            break;
+        case "ArrowRight":
+            movePlayer(event, [1,0]);
+            break;
+        case "ArrowUp":
+            movePlayer(event, [0,-1]);
+            break;
+        case "ArrowDown":
+            movePlayer(event, [0,1]);
+            break;
     }
-  });
-
-function indexPosConvers(i) {
-    return i[0]*tileMap.width+i[1]+1;
 }
-function movePlayer(newPos) {
-    if (["block","block G"].includes(document.getElementById(indexPosConvers(newPos)).className)) {
-        document.getElementById(indexPosConvers(personPos)).classList.remove("P");
-        if ((tileMap.mapGrid[personPos[0]][personPos[1]]!="P")&&(tileMap.mapGrid[personPos[0]][personPos[1]]!=" ")) {
-            document.getElementById(indexPosConvers(personPos)).classList.add(tileMap.mapGrid[personPos[0]][personPos[1]]);
-        }
-        document.getElementById(indexPosConvers(newPos)).classList.remove("G");
-        document.getElementById(indexPosConvers(newPos)).classList.add("P");
+
+function movePlayer(event, diffPos) {
+    event.preventDefault();
+    let newPos = [personPos[0]+diffPos[0], personPos[1]+diffPos[1]];
+    if (["block G","block"].includes(document.getElementById(idConvers(newPos)).className)) {
+        document.getElementById(idConvers(personPos)).classList.remove("P");
+        document.getElementById(idConvers(newPos)).classList.add("P");
         personPos = newPos;
     }
-    else if (document.getElementById(indexPosConvers(newPos)).className == "block B") {
-        let newPos2 = [newPos[0] + (newPos[0]-personPos[0]), newPos[1] + (newPos[1]-personPos[1])];
-        if (["block","block G"].includes(document.getElementById(indexPosConvers(newPos2)).className)) {
-            document.getElementById(indexPosConvers(personPos)).classList.remove("P");
-            if ((tileMap.mapGrid[personPos[0]][personPos[1]]!="P")&&(tileMap.mapGrid[personPos[0]][personPos[1]]!=" ")) {
-                document.getElementById(indexPosConvers(personPos)).classList.add(tileMap.mapGrid[personPos[0]][personPos[1]]);
-            }
-            document.getElementById(indexPosConvers(newPos2)).classList.remove("G");
-            document.getElementById(indexPosConvers(newPos2)).classList.add("B");
-            document.getElementById(indexPosConvers(newPos)).classList.remove("B");
-            document.getElementById(indexPosConvers(newPos)).classList.add("P");
+    else if (document.getElementById(idConvers(newPos)).classList.contains("B")) {
+        let newPos2 = [newPos[0]+diffPos[0], newPos[1]+diffPos[1]];
+        if (["block G","block"].includes(document.getElementById(idConvers(newPos2)).className)) {
+            document.getElementById(idConvers(personPos)).classList.remove("P");
+            document.getElementById(idConvers(newPos)).classList.add("P");
+            document.getElementById(idConvers(newPos)).classList.remove("B");
+            document.getElementById(idConvers(newPos2)).classList.add("B");
             personPos = newPos;
         }
     }
 }
-function updateTileMap(event) {
-    switch (event.key) {
-        case "ArrowLeft":
-            movePlayer([personPos[0],personPos[1]-1]);
-            break;
-        case "ArrowRight":
-            movePlayer([personPos[0],personPos[1]+1]);
-            break;
-        case "ArrowUp":
-            movePlayer([personPos[0]-1,personPos[1]]);
-            break;
-        case "ArrowDown":
-            movePlayer([personPos[0]+1,personPos[1]]);
-            break;
-        default:
-            break;
-    }
-}
 
-function reset(){
-    let idCounter0=0;
-    for (let i = 0; i < tileMap.height; i++) {
-        for (let j = 0; j < tileMap.width; j++) {
-            document.getElementById(++idCounter0).className="block "+tileMap.mapGrid[i][j];
-        }
-    }
-}
