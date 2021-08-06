@@ -18,17 +18,17 @@ function idConvers(i) {
 }
 
 for (let j = 0; j < tileMap.height; j++) {
-    let newBlocks = document.createElement("TR");
+    let newElements = document.createElement("TR");
     for (let i = 0; i < tileMap.width; i++) {
-        let newBlock = document.createElement("TD");
-        newBlock.id = idConvers([i,j]);
-        newBlock.className=classConvers[tileMap.mapGrid[j][i]];
-        newBlocks.appendChild(newBlock);
+        let newElement = document.createElement("TD");
+        newElement.id = idConvers([i,j]);
+        newElement.className=classConvers[tileMap.mapGrid[j][i]];
+        newElements.appendChild(newElement);
         if (tileMap.mapGrid[j][i] == "P") {
             personPos = [i,j];
         }
     }
-    myContent.appendChild(newBlocks);
+    myContent.appendChild(newElements);
 }
 
 window.addEventListener("keydown", updateTileMap);
