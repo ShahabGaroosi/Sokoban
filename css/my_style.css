@@ -1,27 +1,29 @@
-.block {
-    float: left;
-    width: 40px;
-    height: 40px;
-    background-color: black;
-  }
+[class*='tile-'], [class*='entity-'] {
+  float: left;
+  width: 40px;
+  height: 40px; 
+}
 
-  /*  Legend
-    W = Wall
-    B = Movable block
-    P = Player starting position
-    G = Goal area for the blocks
-*/
-.W {
-    background-color: grey;
-  }
+[class*='-space'] {
+  background-color: black;
+}
 
-.G {
-    background-color: red;
-  }
+[class*='-wall'] {
+  background-color: grey;
+}
 
-.B {
-    background-color: brown;
-  }
-.P {
-    background-color: green;
-  }
+[class*='-goal'] {
+  background-color: red;
+}
+
+[class*='-block'] {
+  background-color: brown;
+}
+
+[class*='-block-goal'] {
+  background-color: orange;
+}
+
+[class*='-player'] {
+  background-color: green;
+}
