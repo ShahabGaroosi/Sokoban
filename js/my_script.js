@@ -65,26 +65,25 @@ function movePlayer(event, diffPos) {
             document.getElementById(idConvers(newPos)).className=Entities.Character;
             document.getElementById(idConvers(newPos2)).className=(tileMap.mapGrid[newPos2[1]][newPos2[0]]=="G")?Entities.BlockDone:Entities.Block;
             personPos = newPos;
+            if (checkGameFinished()) {
+                alert("Game Complete!");
+                window.location.reload();
+            }
         }
     }
-    checkGameFinished();
 }
 
 function checkGameFinished() {
-    let numberOfBlocks = 0;
     let numberOfDoneBlocks = 0;
     for (let j = 0; j < tileMap.height; j++) {
         for (let i = 0; i < tileMap.width; i++) {
             if (document.getElementById(idConvers([i,j])).className == Entities.Block) {
-                ++numberOfBlocks;
+                return false;
             }
             else if (document.getElementById(idConvers([i,j])).className == Entities.BlockDone) {
                 ++numberOfDoneBlocks;
             }
         }
     }
-    if ((numberOfBlocks==0)&&(numberOfDoneBlocks>0)) {
-        alert("Game Complete!");
-        window.location.reload();
-    }
+    return (numberOfDoneBlocks>0);
 }
